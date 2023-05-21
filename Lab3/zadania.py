@@ -102,67 +102,67 @@ print(model.wv.similarity('cichym', 'szeptem'))
 
 # Zadanie 2
 
-# all_vectors = []
-# for filename in all_filenames:
-#     with open(filename, "r", encoding="utf8") as f:
-#         text = f.read()
-#     tokens = [i for i in word_tokenize(text.lower()) if i not in stopwords]
-#     alpha_token = []
-#     for t in tokens:
-#         alpha_token.append(''.join(e for e in i if e.isalnum()))
-#     tokens = alpha_token
+all_vectors = []
+for filename in all_filenames:
+    with open(filename, "r", encoding="utf8") as f:
+        text = f.read()
+    tokens = [i for i in word_tokenize(text.lower()) if i not in stopwords]
+    alpha_token = []
+    for t in tokens:
+        alpha_token.append(''.join(e for e in i if e.isalnum()))
+    tokens = alpha_token
 
-#     vectors = []
-#     for token in tokens:
-#         vector = model.wv[token]
-#         vectors.append(vector)
-#     mean_vectors = np.mean(vectors, axis=0)
-#     all_vectors.append(mean_vectors)
+    vectors = []
+    for token in tokens:
+        vector = model.wv[token]
+        vectors.append(vector)
+    mean_vectors = np.mean(vectors, axis=0)
+    all_vectors.append(mean_vectors)
 
-# similarities = []
-# for idx_vector1, vector1 in enumerate(all_vectors):
-#     for idx_vector2, vector2 in enumerate(all_vectors):
-#         if idx_vector1 == idx_vector2:
-#             continue
-#         similarity = np.dot(vector1, vector2)/(norm(vector1)*norm(vector2))
-#         output = {
-#             "file_1": all_filenames[idx_vector1],
-#             "file_2": all_filenames[idx_vector2],
-#             "cos_sim": similarity
-#         }
-#         similarities += [output]
+similarities = []
+for idx_vector1, vector1 in enumerate(all_vectors):
+    for idx_vector2, vector2 in enumerate(all_vectors):
+        if idx_vector1 == idx_vector2:
+            continue
+        similarity = np.dot(vector1, vector2)/(norm(vector1)*norm(vector2))
+        output = {
+            "file_1": all_filenames[idx_vector1],
+            "file_2": all_filenames[idx_vector2],
+            "cos_sim": similarity
+        }
+        similarities += [output]
 
-# min = 100
-# min_file_1_name = ''
-# min_file_2_name = ''
-# max = 0
-# max_file_1_name = ''
-# max_file_2_name = ''
+min = 100
+min_file_1_name = ''
+min_file_2_name = ''
+max = 0
+max_file_1_name = ''
+max_file_2_name = ''
 
-# for similarity in similarities:
-#     file_1_name = similarity['file_1']
-#     file_2_name = similarity['file_2']
-#     s = similarity['cos_sim']
+for similarity in similarities:
+    file_1_name = similarity['file_1']
+    file_2_name = similarity['file_2']
+    s = similarity['cos_sim']
 
-#     if min > s:
-#         min = s
-#         min_file_1_name = file_1_name
-#         min_file_2_name = file_2_name
+    if min > s:
+        min = s
+        min_file_1_name = file_1_name
+        min_file_2_name = file_2_name
 
-#     if max < s:
-#         max = s
-#         max_file_1_name = file_1_name
-#         max_file_2_name = file_2_name
+    if max < s:
+        max = s
+        max_file_1_name = file_1_name
+        max_file_2_name = file_2_name
 
-# print(" - MIN:")
-# print(min)
-# print(min_file_1_name)
-# print(max_file_2_name)
+print(" - MIN:")
+print(min)
+print(min_file_1_name)
+print(max_file_2_name)
 
-# print(" - MAX")
-# print(max)
-# print(max_file_1_name)
-# print(max_file_2_name)
+print(" - MAX")
+print(max)
+print(max_file_1_name)
+print(max_file_2_name)
 
 # Zadanie 3
 
