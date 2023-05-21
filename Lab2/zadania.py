@@ -1,5 +1,4 @@
 import pandas as pd
-import sklearn
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.snowball import SnowballStemmer
@@ -15,14 +14,13 @@ from sklearn.svm import SVC
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import PrecisionRecallDisplay
 
-#### ZADANIE 1
+#### ZADANIE 1 #######################################################################
 
 tokenizer = nltk.tokenize.TreebankWordTokenizer()
 s_words = stopwords.words("english")
-# stemmer = SnowballStemmer("english")
-stemmer = ARLSTem()
+stemmer = SnowballStemmer("english")
+# stemmer = ARLSTem()
 lemmatizer = WordNetLemmatizer()
-
 
 text = pd.read_csv("imbd.csv",delimiter=",")
 
@@ -43,11 +41,10 @@ for sentence in text["tokens_no_stopwords"]:
     tokens_lem.append([stemmer.stem(word) for word in sentence])
 text["tokens_lem"] = tokens_lem
 
-print(text["tokens_stemm"])
-
 text.to_csv("result.csv", index=False)
+print(f"Results saved as result.csv")
 
-#### ZADANIE 2
+#### ZADANIE 2 #######################################################################
 
 dataset = pd.read_csv("result.csv",delimiter=",")
 random_state = 10
