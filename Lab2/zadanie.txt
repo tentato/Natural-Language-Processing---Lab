@@ -1,0 +1,7 @@
+1
+stemming inny nltk
+2
+zamiast naive bias wziać 2 -> sieć mlp, svm
+3
+powtarzana strat wal 2x5
+accuracy -> precision recall
