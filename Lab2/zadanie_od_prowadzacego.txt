@@ -1,0 +1,7 @@
+1 zadanie
+    stemming inny nltk
+2 zadanie
+    zamiast naive bias wziać 2 -> sieć mlp, svm
+3 zadanie
+    powtarzana strat wal 2x5
+    zamiast accuracy pokazać precision recall
