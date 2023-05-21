@@ -1,5 +1,5 @@
 1 zadanie
-    stemming inny nltk
+    stemming inny, ale może być z nltk
 2 zadanie
     zamiast naive bias wziać 2 -> sieć mlp, svm
 3 zadanie

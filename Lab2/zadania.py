@@ -16,46 +16,43 @@ from sklearn.metrics import PrecisionRecallDisplay
 
 #### ZADANIE 1 #######################################################################
 
-tokenizer = nltk.tokenize.TreebankWordTokenizer()
-s_words = stopwords.words("english")
-stemmer = SnowballStemmer("english")
-# stemmer = ARLSTem()
-lemmatizer = WordNetLemmatizer()
+# tokenizer = nltk.tokenize.TreebankWordTokenizer()
+# s_words = stopwords.words("english")
+# stemmer = SnowballStemmer("english")
+# # stemmer = ARLSTem()
+# lemmatizer = WordNetLemmatizer()
 
-text = pd.read_csv("imbd.csv",delimiter=",")
+# text = pd.read_csv("imbd.csv",delimiter=",")
 
-text.content = text.content.apply(str.lower)
-text["tokens"] = text.content.apply(tokenizer.tokenize)
-tokens_no_stopwords = []
-for sentence in text["tokens"]:
-    tokens_no_stopwords.append([word for word in sentence if word not in s_words])
-text["tokens_no_stopwords"] = tokens_no_stopwords
+# text.content = text.content.apply(str.lower)
+# text["tokens"] = text.content.apply(tokenizer.tokenize)
+# tokens_no_stopwords = []
+# for sentence in text["tokens"]:
+#     tokens_no_stopwords.append([word for word in sentence if word not in s_words])
+# text["tokens_no_stopwords"] = tokens_no_stopwords
 
-tokens_stemm = []
-for sentence in text["tokens_no_stopwords"]:
-    tokens_stemm.append([stemmer.stem(word) for word in sentence])
-text["tokens_stemm"] = tokens_stemm
-tokens_lem = []
+# tokens_stemm = []
+# for sentence in text["tokens_no_stopwords"]:
+#     tokens_stemm.append([stemmer.stem(word) for word in sentence])
+# text["tokens_stemm"] = tokens_stemm
+# tokens_lem = []
 
-for sentence in text["tokens_no_stopwords"]:
-    tokens_lem.append([stemmer.stem(word) for word in sentence])
-text["tokens_lem"] = tokens_lem
+# for sentence in text["tokens_no_stopwords"]:
+#     tokens_lem.append([stemmer.stem(word) for word in sentence])
+# text["tokens_lem"] = tokens_lem
 
-text.to_csv("result.csv", index=False)
-print(f"Results saved as result.csv")
+# text.to_csv("result.csv", index=False)
+# print(f"Results saved as result.csv")
 
 #### ZADANIE 2 #######################################################################
 
 dataset = pd.read_csv("result.csv",delimiter=",")
 random_state = 10
-
-
 sets = ["tokens","tokens_no_stopwords","tokens_stemm","tokens_lem"]
 models = [MLPClassifier(), SVC()]
 
 for set in sets:
     for model in models:
-        print(f"Model: {model}")
         X_train, X_test, y_train, y_test = train_test_split(dataset[set], dataset.label, test_size=0.3, random_state=random_state)
 
         cv = CountVectorizer()
@@ -65,7 +62,11 @@ for set in sets:
 
         y_pred = model.predict(cv.transform(X_test).toarray())
         score = accuracy_score(y_test, y_pred)
-        print(f"Score: {score}")
+        print(f"Model: {model}, \tDataset: {set}, \tAccuracy score: {score}")
+
+# Obserwacje:        
+#   Wyniki dla klasyfikatora SVC są lepsze niż dla MLP.
+#   Zastosowanie stemmingu i lematyzacji ma pozytywny wpływ na wynik metryki accuraccy score.
 
 ##### ZADANIE 3
 
