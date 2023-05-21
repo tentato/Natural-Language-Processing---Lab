@@ -12,6 +12,8 @@ from sklearn.svm import SVC
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics import precision_recall_fscore_support
 
+# Zadanie odrabiane z powodu nieobecności. Zawiera modyfikacje wskazane przez prowadzącego.
+
 #### ZADANIE 1 #######################################################################
 
 tokenizer = nltk.tokenize.TreebankWordTokenizer()

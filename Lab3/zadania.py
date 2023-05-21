@@ -3,14 +3,15 @@ import nltk
 from nltk.tokenize import word_tokenize
 from nltk.corpus import stopwords
 import gensim
-# from gensim.models import Word2Vec
+
+# Zadanie 1
 
 nltk.download('punkt')
 
-directory_adam = 'lab3/poezja/adam/'
-directory_jan = 'lab3/poezja/jan/'
-directory_juliusz = 'lab3/poezja/juliusz/'
-directory_poezja = 'lab3/poezja/'
+directory_adam = 'poezja/adam/'
+directory_jan = 'poezja/jan/'
+directory_juliusz = 'poezja/juliusz/'
+directory_poezja = 'poezja/'
 
 filenames_adam =  os.listdir(directory_adam)
 filenames_jan =  os.listdir(directory_jan)
@@ -22,24 +23,21 @@ texts_jan = []
 texts_juliusz = []
 
 for file in filenames_adam:
-    print(file)
     with open(directory_adam+file, "r", encoding="utf8") as f:
-        texts.append(f.read())
-        texts_adam.append(f.read())
+        text = f.read()
+        texts.append(text)
+        texts_adam.append(text)
 # DS Store file removed from folder
 for file in filenames_jan:
-    print(file)
     with open(directory_jan+file, "r", encoding="utf8") as f:
-        texts.append(f.read())
-        texts_jan.append(f.read())
+        text = f.read()
+        texts.append(text)
+        texts_jan.append(text)
 for file in filenames_juliusz:
-    print(file)
     with open(directory_juliusz+file, "r", encoding="utf8") as f:
-        texts.append(f.read())
-        texts_juliusz.append(f.read())
-
-# print(texts[0])
-# exit()
+        text = f.read()
+        texts.append(text)
+        texts_juliusz.append(text)
 
 with open(directory_poezja+"stopwordsPL.txt", "r", encoding="utf8") as f:
     stopwords = f.readlines()
@@ -48,14 +46,13 @@ for word in stopwords:
     stopwords_clear.append(word.replace("\n", ""))
 stopwords = set(stopwords_clear)
 
-# 1 token = 1 text
 tokens = []
 tokens_adam = []
 tokens_jan = []
 tokens_juliusz = []
 for text in texts:
-    token_list = [i for i in word_tokenize(text.lower()) if i not in stopwords]
     alpha_token = []
+    token_list = [i for i in word_tokenize(text.lower()) if i not in stopwords]
     for i in token_list:
         alpha_token.append(''.join(e for e in i if e.isalnum()))
     tokens.append(alpha_token)
@@ -81,19 +78,22 @@ for text in texts_juliusz:
         alpha_token.append(''.join(e for e in i if e.isalnum()))
     tokens_juliusz.append(alpha_token)
 
-# print(tokens[0])
-# print(len(tokens))
-
-model = gensim.models.Word2Vec(sentences=tokens, vector_size=16, window=5, min_count=1)
-# model.train(tokens_adam, total_examples=model.corpus_count, epochs=8)
-model.train(tokens_jan, total_examples=model.corpus_count, epochs=16)
-# model.train(tokens_juliusz, total_examples=model.corpus_count, epochs=8)
+model = gensim.models.Word2Vec(sentences=tokens, vector_size=32, window=5, min_count=1, workers=4)
+model.train(tokens_adam, total_examples=model.corpus_count, epochs=4)
+model.train(tokens_jan, total_examples=model.corpus_count, epochs=4)
+model.train(tokens_juliusz, total_examples=model.corpus_count, epochs=4)
 
 print(model.wv.similarity('wiatr', 'fale'))
 print(model.wv.similarity('trawie', 'zioła'))
 print(model.wv.similarity('zbroja', 'szalonych'))
 print(model.wv.similarity('cichym', 'szeptem'))
 
-# wyniki podobieństwa bardzo niskie, pierwsze i ostatnie są najbardziej podobne
-# 3.11
-# 3.10
+# 0.9529961
+# 0.35018194
+# 0.39924064
+# 0.8062433
+
+# Pierwsze i ostatnie pary są najbardziej podobne.
+
+# Zadanie 2
+
