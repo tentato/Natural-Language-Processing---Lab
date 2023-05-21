@@ -5,6 +5,7 @@ from nltk.corpus import stopwords
 import gensim
 import numpy as np
 from numpy.linalg import norm 
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
 
 # Zadanie 1
 
@@ -87,10 +88,10 @@ model.train(tokens_adam, total_examples=model.corpus_count, epochs=4)
 model.train(tokens_jan, total_examples=model.corpus_count, epochs=4)
 model.train(tokens_juliusz, total_examples=model.corpus_count, epochs=4)
 
-# print(model.wv.similarity('wiatr', 'fale'))
-# print(model.wv.similarity('trawie', 'zioła'))
-# print(model.wv.similarity('zbroja', 'szalonych'))
-# print(model.wv.similarity('cichym', 'szeptem'))
+print(model.wv.similarity('wiatr', 'fale'))
+print(model.wv.similarity('trawie', 'zioła'))
+print(model.wv.similarity('zbroja', 'szalonych'))
+print(model.wv.similarity('cichym', 'szeptem'))
 
 # 0.9529961
 # 0.35018194
@@ -101,10 +102,85 @@ model.train(tokens_juliusz, total_examples=model.corpus_count, epochs=4)
 
 # Zadanie 2
 
+# all_vectors = []
+# for filename in all_filenames:
+#     with open(filename, "r", encoding="utf8") as f:
+#         text = f.read()
+#     tokens = [i for i in word_tokenize(text.lower()) if i not in stopwords]
+#     alpha_token = []
+#     for t in tokens:
+#         alpha_token.append(''.join(e for e in i if e.isalnum()))
+#     tokens = alpha_token
+
+#     vectors = []
+#     for token in tokens:
+#         vector = model.wv[token]
+#         vectors.append(vector)
+#     mean_vectors = np.mean(vectors, axis=0)
+#     all_vectors.append(mean_vectors)
+
+# similarities = []
+# for idx_vector1, vector1 in enumerate(all_vectors):
+#     for idx_vector2, vector2 in enumerate(all_vectors):
+#         if idx_vector1 == idx_vector2:
+#             continue
+#         similarity = np.dot(vector1, vector2)/(norm(vector1)*norm(vector2))
+#         output = {
+#             "file_1": all_filenames[idx_vector1],
+#             "file_2": all_filenames[idx_vector2],
+#             "cos_sim": similarity
+#         }
+#         similarities += [output]
+
+# min = 100
+# min_file_1_name = ''
+# min_file_2_name = ''
+# max = 0
+# max_file_1_name = ''
+# max_file_2_name = ''
+
+# for similarity in similarities:
+#     file_1_name = similarity['file_1']
+#     file_2_name = similarity['file_2']
+#     s = similarity['cos_sim']
+
+#     if min > s:
+#         min = s
+#         min_file_1_name = file_1_name
+#         min_file_2_name = file_2_name
+
+#     if max < s:
+#         max = s
+#         max_file_1_name = file_1_name
+#         max_file_2_name = file_2_name
+
+# print(" - MIN:")
+# print(min)
+# print(min_file_1_name)
+# print(max_file_2_name)
+
+# print(" - MAX")
+# print(max)
+# print(max_file_1_name)
+# print(max_file_2_name)
+
+# Zadanie 3
+
+documents = [TaggedDocument(doc, [i]) for i, doc in enumerate(tokens)]
+model = Doc2Vec(documents, vector_size=32, window=5, min_count=1, workers=4)
+model.train(documents, total_examples=model.corpus_count, epochs=4)
+
 all_vectors = []
 for filename in all_filenames:
+    text = []
     with open(filename, "r", encoding="utf8") as f:
         text = f.read()
+    if "adam" in filename:
+        text = "adam "+text
+    elif "jan" in filename:
+        text = "jan "+text
+    elif "juliusz" in filename:
+        text = "juliusz "+text
     tokens = [i for i in word_tokenize(text.lower()) if i not in stopwords]
     alpha_token = []
     for t in tokens:
@@ -153,12 +229,23 @@ for similarity in similarities:
         max_file_1_name = file_1_name
         max_file_2_name = file_2_name
 
-# print("MINI")
-# print(min)
-# print(min_file_1_name)
-# print(max_file_2_name)
+print(" - MIN:")
+print(min)
+print(min_file_1_name)
+print(max_file_2_name)
 
-# print("MAXI")
-# print(max)
-# print(max_file_1_name)
-# print(max_file_2_name)
+print(" - MAX")
+print(max)
+print(max_file_1_name)
+print(max_file_2_name)
+
+# Dodanie imienia autora nie wpływa na zmiane rezultatów.
+# Wyniki:
+#  - MIN:
+# 0.31
+# poezja/adam/adam_mickiewicz_do_laury.txt
+# poezja/jan/jan_kochanowski_do_magdaleny.txt
+#  - MAX
+# 0.98
+# poezja/adam/adam_mickiewicz_do_laury.txt
+# poezja/adam/adam_mickiewicz_reduta_ordona.txt
