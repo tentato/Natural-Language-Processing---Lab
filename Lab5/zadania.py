@@ -7,26 +7,27 @@ from bs4 import BeautifulSoup
 
 # zadanie 1
 
-# response = requests.get('https://wolnelektury.pl/api/books/')
-# response_json = response.json()
+response = requests.get('https://wolnelektury.pl/api/books/')
+response_json = response.json()
 
-# random_books = []
+random_books = []
 
-# random_books_indexes = np.random.randint(0, len(response_json), size=(1))
-# for i in random_books_indexes:
-#     random_books.append(response_json[i])
-# # print(random_books_indexes)
-# # print(random_books)
-# # Wypisz tytuł, treść, autora, gatunek oraz epokę dla każdego utworu.
-# for book in random_books:
-#     for attribute, value in book.items():
-#         if attribute == 'title' or attribute == 'author' or attribute == 'epoch':
-#             print(f"{attribute}: {value}")
-#         elif attribute == 'href':
-#             res = requests.get(value).json()
-#             content_link = res["txt"]
-#             content = requests.get(content_link)
-#             print(f"Treść: {content.text}")
+random_books_indexes = np.random.randint(0, len(response_json), size=(1))
+for i in random_books_indexes:
+    random_books.append(response_json[i])
+# print(random_books_indexes)
+# print(random_books)
+# Wypisz tytuł, treść, autora, gatunek oraz epokę dla każdego utworu.
+for book in random_books:
+    for attribute, value in book.items():
+        if attribute == 'title' or attribute == 'author' or attribute == 'epoch':
+            print(f"{attribute}: {value}")
+        elif attribute == 'href':
+            res = requests.get(value).json()
+            content_link = res["txt"]
+            content = requests.get(content_link)
+            print(f"Treść: {content.text}")
+            
 # Spotify posiada bardzo fajne API. 
 # Można pobawić się w przypisywanie tekstów piosenek do pory roku/samopoczucia.
 
