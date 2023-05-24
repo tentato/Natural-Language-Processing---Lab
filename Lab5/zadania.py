@@ -12,7 +12,7 @@ response_json = response.json()
 
 random_books = []
 
-random_books_indexes = np.random.randint(0, len(response_json), size=(1))
+random_books_indexes = np.random.randint(0, len(response_json), size=(20))
 for i in random_books_indexes:
     random_books.append(response_json[i])
 # print(random_books_indexes)
@@ -23,15 +23,20 @@ for book in random_books:
         if attribute == 'title' or attribute == 'author' or attribute == 'epoch':
             print(f"{attribute}: {value}")
         elif attribute == 'href':
-            res = requests.get(value).json()
-            content_link = res["txt"]
-            content = requests.get(content_link)
-            print(f"Treść: {content.text}")
-            
+            try:
+                res = requests.get(value).json()
+                content_link = res["txt"]
+                content = requests.get(content_link)
+                print(f"Treść: {content.text}")
+            except:
+                print("Treść niedostępna!")
+
 # Spotify posiada bardzo fajne API. 
 # Można pobawić się w przypisywanie tekstów piosenek do pory roku/samopoczucia.
 
 # zadanie 2
+
+print("ZADANIE 2")
 
 start_url = "https://gazetawroclawska.pl/wiadomosci"
 
