@@ -1,8 +1,5 @@
 import requests
-import json
 import numpy as np
-import scrapy
-from scrapy.item import Item, Field
 from bs4 import BeautifulSoup
 
 # zadanie 1
@@ -48,8 +45,14 @@ print(title)
 # Używa się go głównie po to, aby witryna nie była przeciążona żądaniami." - https://developers.google.com/search/docs/crawling-indexing/robots/intro?hl=pl
 
 # zadanie 3
-
 # Opóźnienie jest po to, aby nie dostać bana 
 
-# content = s
-# all_divs = content.find_all("div")
+articles = s.find_all("a", {"class": "atomsListingArticleTileWithSeparatedLink__titleLink"})
+
+for article in articles:
+    print("https://gazetawroclawska.pl/"+article.get('href'))
+    article_text = requests.get("https://gazetawroclawska.pl/"+article.get('href'))
+    bs = BeautifulSoup(article_text.text, 'html.parser')
+    title = bs.find("header", {"class": "atomsArticleHead component"})
+    # print(title)
+print(s.find_all("div", {"class": "atomsListingArticleTileWithSeparatedLink atomsListingArticleTileWithSeparatedLink--withGrid component"}))
